@@ -19,7 +19,6 @@ legend('show');
 xlabel('t/T_s')
 ylabel('Amplitude')
 grid on;axis([]);
-MakeFigureLatexReady(gcf,config{:},'filename','srrc_impulse_response');
 
 % Design filter
 betas = [0.1:0.2:0.9];
@@ -38,4 +37,3 @@ legend('show');
 xlabel('t/T_s')
 ylabel('Amplitude')
 grid on;axis([]);
-MakeFigureLatexReady(gcf,config{:},'filename','rrc_impulse_response');

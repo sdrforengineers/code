@@ -11,9 +11,6 @@ chanEst.m
 chapter2.m
 chapter3.m
 chapter4.m
-chapter5.m
-chapter6.m
-chapter.m
 compareBarkers.m
 compareDD_LMS.m
 comSystem.m
@@ -59,7 +56,7 @@ template_1.m
 template_2.m
 template_3.m
 template_rt.m
-time-alias.m
+time_alias.m
 TimingError.m
 transmitoffset.m
 transmitrepeat.m

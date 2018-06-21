@@ -2,16 +2,6 @@ clear all;
 Fs = 1000;      % Sample rate (Hz)
 Fa = 1105;       % Input Frequency (Hz)
 
-% Specify plot parameters
-txtsize=10;
-ltxtsize=9;
-pwidth=3;
-pheight=3
-pxoffset=0.65;
-pyoffset=0.5;
-markersize=5;
-
-
 % Determine Nyquist zones
 zone = 1 + floor(Fa / (Fs/2));
 alias = mod(Fa, Fs);
@@ -29,11 +19,11 @@ wave = sin(2*pi*Fa/Fs*analogIndexes);
 input_str = sprintf('Actual Input Frequency = %i', Fa);
 alias_str = sprintf('Measured Frequency = %i', abs(alias * Fs));
 
-% Plot analog signal and sampled 
+% Plot analog signal and sampled
 f1=figure(1);
 bar(analogIndexes(samplingIndexes), wave(samplingIndexes), .1 ); hold on;
 plot(analogIndexes(samplingIndexes), wave(samplingIndexes), 'o')
-plot(analogIndexes, wave); 
+plot(analogIndexes, wave);
 xlabel('Digital Samples');ylabel('Amplitude');
 xlim([0 N-1]);
 %text(1,-.8, input_str,'Color','red','FontSize',12) ;
@@ -52,20 +42,3 @@ xlabel('Digital Samples');ylabel('Amplitude');
 xlim([0 N-1])
 hold off;
  
-%%%
-%% GENERATE FIGURES HERE
-figure(1);
-set(0, 'currentfigure', f1);  % Optional select given figure from handle
-%%%
-SetPlotSize ([pxoffset pyoffset pwidth pheight],'inches','white');
-SetPlotFont ('Times', txtsize);
-set(gcf,'PaperPositionMode','auto');
-print('./fig_st_sine.eps','-depsc');
-
-figure(2);
-set(0, 'currentfigure', f2);  % Optional select given figure from handle
-%%%
-SetPlotSize ([pxoffset pyoffset pwidth pheight],'inches','white');
-SetPlotFont ('Times', txtsize);
-set(gcf,'PaperPositionMode','auto');
-print('./fig_alias.eps','-depsc');

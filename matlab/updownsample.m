@@ -42,8 +42,8 @@ fft_plot(random(start:end), 1, txtsize, ltxtsize, pwidth, pheight, ...
     {'Original', 'Random Binary Signal : Fourier domain'}, '$f_{s1}$');
 
 % Create lowpass filter and apply it to both data streams
-% b = firls(n,f,a), 
-%     n is the FIR filter order 
+% b = firls(n,f,a),
+%     n is the FIR filter order
 %     f is a vector of pairs of frequency points,
 %     a is a vector containing the desired amplitude at the points in f
 coeffs1 = firls(taps,[0 0.2 0.22 1],[1 1 0 0]);   % FIR filter coefficients
@@ -71,7 +71,7 @@ fft_plot(random_bwlimited(start:end), 1, txtsize, ltxtsize, pwidth, ...
     {'Band Limited', 'Random Binary Signal : Fourier domain'}, '$f_{s1}$');
 
 % y = upsample(x,n)
-%     increases the sampling rate of x by inserting (n – 1) zeros 
+%     increases the sampling rate of x by inserting (n – 1) zeros
 %     between samples.
 N = 5;
 sin_up = upsample(sin_bwlimited,N);
@@ -98,7 +98,7 @@ fft_plot(random_up(start:end), N, txtsize, ltxtsize, pwidth, pheight, pxoffset, 
     pyoffset, markersize, ...
     {sprintf('Improperly Upsampled (%d)', N), 'Random Binary Signal : Fourier domain'}, '$f_{s2}$');
 
-% Attempt to downsampling by M without filtering 
+% Attempt to downsampling by M without filtering
 % This is incorrect, but is instructive to show what artifacts occur
 M = 3;
 sin_up_down = downsample(sin_up,M);
@@ -124,7 +124,7 @@ fft_plot(random_up_down(start:end), N, txtsize, ltxtsize, pwidth, pheight, ...
     {sprintf('Improperly Upsampled (%d) then Downsampled (%d)', N, M), 'Random Binary Signal : Fourier domain'}, '$f_{s3}$');
 
 % Lowpass filtering of baseband periodic replica followed by downsampling
-% (correct approach) 
+% (correct approach)
 coeffs2 = firls(taps,[0 0.15 0.25 1],[N N 0 0]); % FIR filter coefficients
 sin_up_filtered = filter(coeffs2,1,sin_up);
 sin_up_filtered_down = downsample(sin_up_filtered,M);
@@ -186,22 +186,10 @@ function out = do_fs(in)
 end
 function time_plot(x1, x2, txtsize, ltxtsize, pwidth, pheight, pxoffset, ...
     pyoffset, markersize, titlestr)
-    persistent file;    
+    persistent file;
     xlabel('Discrete Time (n)');ylabel('Signal Amplitude');
     ylim([-1.5 1.5]);
     xlim([x1 x2]);
-    save=1;
-    if save
-        if isempty(file)  || (file >= 13)
-            file = 1;
-        else
-            file = file + 1;
-        end
-        SetPlotSize ([pxoffset pyoffset pwidth pheight],'inches','white');
-        SetPlotFont ('Times', txtsize);
-        set(gcf,'PaperPositionMode','auto');
-        print(sprintf('ch2_upsample_time_%d', file),'-depsc');
-    end
     title(titlestr);
 end
 function fft_plot(data, points, txtsize, ltxtsize, pwidth, pheight, pxoffset, ...
@@ -229,17 +217,5 @@ function fft_plot(data, points, txtsize, ltxtsize, pwidth, pheight, pxoffset, ..
     xlim([-0.5 0.5]);
     xticks([-.5 -.25  0  .25  .5]);
     grid on;
-    save=1;
-    if save
-        if isempty(file) ||  (file >= 13)
-            file = 1;
-        else
-            file = file + 1;
-        end
-        SetPlotSize ([pxoffset pyoffset pwidth pheight],'inches','white');
-        SetPlotFont ('Times', txtsize);
-        set(gcf,'PaperPositionMode','auto');
-        print(sprintf('ch2_upsample_fft_%d', file),'-depsc');
-    end
     title(titlestr);
 end

@@ -1,5 +1,5 @@
 %----------------------------------------------------------------------
-% Chapter 4 
+% Chapter 4
 % "Digital Communication Systems Engineering Using Software Defined Radio
 % MATLAB Scripts
 %----------------------------------------------------------------------
@@ -7,16 +7,7 @@
 % Clear workspace
 clear all;
 
-
-% Specify plot parameters
-txtsize=10;
-ltxtsize=9;
-pwidth=4;
-pheight=4;
-pxoffset=0.65;
-pyoffset=0.5;
-markersize=5;
-
+figNum = 1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Sending binary data via sinusoidal signal manipulation
@@ -49,45 +40,28 @@ for ind = 1:1:bin_data_len,
         sig_ask = [sig_ask 0.5*sig_carrier_base];
         sig_psk = [sig_psk sig_carrier_phase];
         sig_fsk = [sig_fsk sig_carrier_freq];
-    end;   
+    end;
 end;
 
 % Display all three representations
-figure(1);
-SetPlotSize ([pxoffset pyoffset pwidth-1 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+figure(figNum); figNum = figNum+1;
 plot(0:1:(sig_len-1),sig_bin);axis([0 sig_len-1 -0.1 1.1]);xlabel('Time (n)');ylabel('Amplitude');
 %title('Binary Transmission');
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_sinewavemod_bin','-depsc');
-close;
-figure(1);
-SetPlotSize ([pxoffset pyoffset pwidth-1 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 plot(0:1:(sig_len-1),sig_ask);xlabel('Time (n)');ylabel('Amplitude');
 %title('Amplitude Shift Keying');
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_sinewavemod_ask','-depsc');
-close;
-figure(1);
-SetPlotSize ([pxoffset pyoffset pwidth-1 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 plot(0:1:(sig_len-1),sig_psk);xlabel('Time (n)');ylabel('Amplitude');
 %title('Phase Shift Keying');
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_sinewavemod_psk','-depsc');
-close;
-figure(1);
-SetPlotSize ([pxoffset pyoffset pwidth-1 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 plot(0:1:(sig_len-1),sig_fsk);xlabel('Time (n)');ylabel('Amplitude');
 %title('Frequency Shift Keying');
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_sinewavemod_fsk','-depsc');
-close;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Reducing amount of data transmission using source coding 
+% Reducing amount of data transmission using source coding
 
 % Define parameters
 len = 10000; % Length of binary data stream
@@ -133,17 +107,13 @@ total_size_ebin1 = length(ind1)*numbits1 + length(find(enc_bin1 == 0));
 total_size_ebin2 = length(ind2)*numbits2 + length(find(enc_bin2 == 0));
 
 % Plot sizes of original and encoded binary sequences
-figure(2);
-SetPlotSize ([pxoffset pyoffset pwidth pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+figure(figNum); figNum = figNum+1;
 bar([len total_size_ebin1 total_size_ebin2]);
 set(gca,'XTick',[1 2 3],'XTickLabel',{'Original','Encoded (50/50)','Encoded (90/10)'});
 xlabel('Binary Transmission Sequences');
 ylabel('Number of Bits');
 %title('Impact of Source Coding on Binary Transmissions');
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_srccoding','-depsc');
-close;
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Protect data using simple repetition channel coding
@@ -166,10 +136,10 @@ for ind = 1:1:max([N1 N2 N3]),
         chcode1_bin_str(ind:N1:(N1*(len-1)+ind))=bin_str;
     end;
     if (ind<=N2)
-        chcode2_bin_str(ind:N2:(N2*(len-1)+ind))=bin_str;    
+        chcode2_bin_str(ind:N2:(N2*(len-1)+ind))=bin_str;
     end;
     if (ind<=N3)
-        chcode3_bin_str(ind:N3:(N3*(len-1)+ind))=bin_str;    
+        chcode3_bin_str(ind:N3:(N3*(len-1)+ind))=bin_str;
     end;
 end;
 
@@ -213,17 +183,13 @@ ber2 = sum(abs(bin_str - rx_bin_str2))/len;
 ber3 = sum(abs(bin_str - rx_bin_str3))/len;
 
 % Plot sizes of original and encoded binary sequences
-figure(3);
-SetPlotSize ([pxoffset pyoffset pwidth pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+figure(figNum); figNum = figNum+1;
+
 bar([ber0 ber1 ber2 ber3]);
 set(gca,'XTick',[1 2 3 4],'XTickLabel',{'None',sprintf('N=%d',N1),sprintf('N=%d',N2),sprintf('N=%d',N3)});
 xlabel('Binary Transmission Sequences');
 ylabel('Bit Error Rate');
 %title('Impact of Repetition Coding on Binary Transmissions');
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_repcoding','-depsc');
-close;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generating 4-level pulse amplitude modulation, quadrature amplitude modulation,
@@ -259,35 +225,22 @@ rx_wavefm_4qam = wavefm_4qam + noise_signal;
 rx_wavefm_qpsk = wavefm_qpsk + noise_signal;
 
 % Generate scatter plots of signal constellations
-figure(4);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+figure(figNum); figNum = figNum+1;
 plot(real(rx_wavefm_4pam),imag(rx_wavefm_4pam),'bo',real(wavefm_4pam),imag(wavefm_4pam),'rx');axis([-4 4 -1 1]);
 xlabel('Inphase');ylabel('Quadrature');
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_4mods_pam','-depsc');
-close;
-figure(4);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 plot(real(rx_wavefm_4qam),imag(rx_wavefm_4qam),'bo',real(wavefm_4qam),imag(wavefm_4qam),'rx');axis([-1.5 1.5 -1.5 1.5]);
 xlabel('Inphase');ylabel('Quadrature');
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_4mods_qam','-depsc');
-close;
-figure(4);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 plot(real(rx_wavefm_qpsk),imag(rx_wavefm_qpsk),'bo',real(wavefm_qpsk),imag(wavefm_qpsk),'rx');axis([-1.5 1.5 -1.5 1.5]);
 xlabel('Inphase');ylabel('Quadrature');
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_4mods_qpsk','-depsc');
-close;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Decode messages from previous example using Euclidean distance
 
-% Go through every received waveform and determine Euclidean distance 
+% Go through every received waveform and determine Euclidean distance
 % between received waveform and the available waveforms
 eucl_dist_4pam = zeros(4,len);
 eucl_dist_4qam = zeros(4,len);
@@ -317,17 +270,12 @@ ber_qpsk = sum([abs((bin_str_est_qpsk(1,:)-'0') - bin_str2) ...
 	abs((bin_str_est_qpsk(2,:)-'0') - bin_str1)])/(2*len);
 
 % Plot bit error rate results for three modulation schemes
-figure(5);
-SetPlotSize ([pxoffset pyoffset pwidth pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+figure(figNum); figNum = figNum+1;
 bar([ber_4pam ber_4qam ber_qpsk]);
 set(gca,'XTick',[1 2 3],'XTickLabel',{'4-PAM','4-QAM','QPSK'});
 xlabel('Modulation Scheme');
 ylabel('Bit Error Rate');
 %title('Impact of Noise on Modulation Scheme Performance');
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_eucliddecode','-depsc');
-close;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Create "waterfall" curves for the bit error rate of a communication
@@ -342,23 +290,23 @@ nvar = [(10.^((1:1:N_snr)/10)).^(-1)]; % Noise variance values
 ber_data = zeros(N_snr,N_tx);
 for ind = 1:1:N_snr, % Different SNR values
     for ind1 = 1:1:N_tx, % Different transmissions for same SNR value
-        
-        % Generate BPSK waveform (we will keep this the same for each 
+
+        % Generate BPSK waveform (we will keep this the same for each
         % SNR value for now)
         tx_sig = 2*round(rand(1,len))-1;
-        
+
         % Create additive noise
         noise_sig = sqrt(nvar(ind))*randn(1,len);
-        
+
         % Create received (noisy) signal
-        rx_sig = tx_sig + noise_sig; 
-        
+        rx_sig = tx_sig + noise_sig;
+
         % Decode received signal back to binary
-        decode_bin_str = zeros(1,len); 
+        decode_bin_str = zeros(1,len);
         decode_bin_str(find(rx_sig >= 0)) = 1;
-        
+
         % Determine and store bit error rate
-        ber_data(ind,ind1) = sum(abs(decode_bin_str - (tx_sig+1)/2))/len; 
+        ber_data(ind,ind1) = sum(abs(decode_bin_str - (tx_sig+1)/2))/len;
     end;
 end;
 
@@ -368,17 +316,15 @@ std_ber = std(ber_data,'',2).';
 
 % Plot bit error rate waterfall curve ... notice the divergence of standard
 % deviation
-figure(6);
-SetPlotSize ([pxoffset pyoffset pwidth pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+figure(figNum); figNum = figNum+1;
 semilogy(1:1:N_snr,mean_ber,'b-',1:1:N_snr,mean_ber-std_ber,'b--',1:1:N_snr,mean_ber+std_ber,'b-.');
 xlabel('Signal to Noise Ratio (dB)');
 ylabel('Probability of Error');
 %title('Bit Error Rate - BPSK (Mean with Standard Deviation)');
 legend('Mean','Mean - Std Dev','Mean + Std Dev');
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_waterfall','-depsc');
-close;
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Decoding QAM waveform using I/Q receiver
@@ -412,24 +358,15 @@ sig_Q_filt = 2.*filter(lpf_coeffs,1,sig_Q_unfilt);
 
 % Plot before + after inphase/quadrature signals regarding composite
 % waveform creation
-figure(7);
-SetPlotSize ([pxoffset pyoffset pwidth pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+figure(figNum); figNum = figNum+1;
 plot(0:1:(N_samp*N_symb-1),sig_I_filt,'r',0:1:(N_samp*N_symb-1),samp_I,'b');legend('Recovered','Original');
 xlabel('Time (n)');ylabel('Amplitude');
 %title('Inphase Signal Component');
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_qamrx_i','-depsc');
-close;
-figure(7);
-SetPlotSize ([pxoffset pyoffset pwidth pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 plot(0:1:(N_samp*N_symb-1),sig_Q_filt,'r',0:1:(N_samp*N_symb-1),samp_Q,'b');legend('Recovered','Original');
 xlabel('Time (n)');ylabel('Amplitude');
 %title('Quadrature Signal Component');
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_qamrx_q','-depsc');
-close;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Gram-Schmidt Orthogonalization and Vectorization
@@ -456,42 +393,25 @@ sig_s3 = (sqrt(3))*phi1 + 0*phi2 + 0*phi3 + 0*phi4;
 sig_s4 = (-1/sqrt(3))*phi1 + (-4/sqrt(6))*phi2 + 0*phi3 + 0*phi4;
 
 % Plot resulting signal waveforms and compare
-figure(8);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+figure(figNum); figNum = figNum+1;
 plot(0:(1/N_samp):(3-(1/N_samp)),sig_s1,'b');xlabel('Time (n)');ylabel('Amplitude');
 %title('s_1(n)');
 axis([0 3.5 -1.5 1.5]);
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_gsortho_s1','-depsc');
-close;
-figure(8);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 plot(0:(1/N_samp):(3-(1/N_samp)),sig_s2,'b');xlabel('Time (n)');ylabel('Amplitude');
 %title('s_2(n)');
 axis([0 3.5 -1.5 1.5]);
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_gsortho_s2','-depsc');
-close;
-figure(8);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 plot(0:(1/N_samp):(3-(1/N_samp)),sig_s3,'b');xlabel('Time (n)');ylabel('Amplitude');
 %title('s_3(n)');
 axis([0 3.5 -1.5 1.5]);
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_gsortho_s3','-depsc');
-close;
-figure(8);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 plot(0:(1/N_samp):(3-(1/N_samp)),sig_s4,'b');xlabel('Time (n)');ylabel('Amplitude');
 %title('s_4(n)');
 axis([0 3.5 -1.5 1.5]);
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_gsortho_s4','-depsc');
-close;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Correlator-based receiver implementation using Gram-Schmidt example
@@ -513,10 +433,10 @@ for ind = 1:1:N_symb,
         orig_msg = [orig_msg 2];
     elseif ((rnd_val >= 0.5)&&(rnd_val < 0.75)) % Add s3(n) waveform
         rx_sig = [rx_sig sig_s3];
-        orig_msg = [orig_msg 3];        
+        orig_msg = [orig_msg 3];
     else % Add s4(n) waveform
         rx_sig = [rx_sig sig_s4];
-        orig_msg = [orig_msg 4];        
+        orig_msg = [orig_msg 4];
     end;
 end;
 
@@ -552,18 +472,13 @@ end;
 
 % Plot original message and recovered message after intercepted signal was
 % vectorized and correlated with available message vectors
-figure(9);
-SetPlotSize ([pxoffset pyoffset pwidth pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+figure(figNum); figNum = figNum+1;
 stem(0:1:(N_symb-1),orig_msg,'bo');hold on;
 stem(0:1:(N_symb-1),est_msg,'rx');
 xlabel('Time (n)');ylabel('Message Index');
 %title('Matching Correlator Receiver Output with Original Transmission');
 legend('Original','Recovered');axis([0 N_symb-1 0 4.5]);
 hold off;
-set(gcf,'PaperPositionMode','auto');
-print('../ch4_corr_rx','-depsc');
-close;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% END OF CHAPTER 4 EXAMPLES %%%%%%%%%%%%%%%%%%%%

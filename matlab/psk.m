@@ -69,22 +69,10 @@ end
 
 function time_plot(x1, x2, txtsize, ltxtsize, pwidth, pheight, pxoffset, ...
     pyoffset, markersize, titlestr)
-    persistent file;    
+    persistent file;
     xlabel('Discrete Time (n)');ylabel('Signal Amplitude');
     ylim([-1.5 1.5]);
     xlim([x1 x2]);
-    save=1;
-    if save
-        if isempty(file)  || (file >= 13)
-            file = 1;
-        else
-            file = file + 1;
-        end
-        SetPlotSize ([pxoffset pyoffset pwidth pheight],'inches','white');
-        SetPlotFont ('Times', txtsize);
-        set(gcf,'PaperPositionMode','auto');
-        print(sprintf('ch2_psk_time_%d', file),'-depsc');
-    end
     title(titlestr);
 end
 function fft_plot(data, points, txtsize, ltxtsize, pwidth, pheight, pxoffset, ...
@@ -112,17 +100,5 @@ function fft_plot(data, points, txtsize, ltxtsize, pwidth, pheight, pxoffset, ..
     xlim([-0.5 0.5]);
     xticks([]);
     grid on;
-    save=1;
-    if save
-        if isempty(file) ||  (file >= 13)
-            file = 1;
-        else
-            file = file + 1;
-        end
-        SetPlotSize ([pxoffset pyoffset pwidth pheight],'inches','white');
-        SetPlotFont ('Times', txtsize);
-        set(gcf,'PaperPositionMode','auto');
-        print(sprintf('ch2_psk_fft_%d', file),'-depsc');
-    end
     title(titlestr);
 end

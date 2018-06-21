@@ -29,11 +29,11 @@ wave = sin(2*pi*Fa/Fs*analogIndexes);
 input_str = sprintf('Actual Input Frequency = %i', Fa);
 alias_str = sprintf('Measured Frequency = %i', abs(alias * Fs));
 
-% Plot analog signal and sampled 
+% Plot analog signal and sampled
 f1=figure(1);
 bar(analogIndexes(samplingIndexes), wave(samplingIndexes), .1 ); hold on;
 plot(analogIndexes(samplingIndexes), wave(samplingIndexes), 'o')
-plot(analogIndexes, wave); 
+plot(analogIndexes, wave);
 xlabel('Digital Samples');ylabel('Amplitude');
 xlim([0 N-1]);
 text(1,-.8, input_str,'Color','red','FontSize',12) ;
@@ -53,21 +53,3 @@ xlabel('Digital Samples');ylabel('Amplitude');
 xlim([0 N-1])
 hold off;
 ylim([-2 2]);
- 
-%%%
-%% GENERATE FIGURES HERE
-figure(1);
-set(0, 'currentfigure', f1);  % Optional select given figure from handle
-%%%
-SetPlotSize ([pxoffset pyoffset pwidth pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
-set(gcf,'PaperPositionMode','auto');
-print('./fig_st_sine.eps','-depsc');
-
-figure(2);
-set(0, 'currentfigure', f2);  % Optional select given figure from handle
-%%%
-SetPlotSize ([pxoffset pyoffset pwidth pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
-set(gcf,'PaperPositionMode','auto');
-print('./fig_alias.eps','-depsc');

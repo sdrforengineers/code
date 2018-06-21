@@ -10,7 +10,7 @@ hBCode = comm.BarkerCode('Length',7,'SamplesPerFrame', barkerLength/2);
 barker = hBCode()>0; frame=[barker;barker;bits];frameSize = length(frame);
 % Modulate
 modD = comm.DBPSKModulator(); bMod = clone(modD);
-modulatedData = modD(frame);
+modulatedData = modD(frame>0);
 %% Add TX/RX Filters
 TxFlt = comm.RaisedCosineTransmitFilter(...
     'OutputSamplesPerSymbol', samplesPerSymbol,...
@@ -36,7 +36,7 @@ for k=1:numFrames
     % Filter signal
     filteredTXDataDelayed = TxFlt(delayedSignal);
     % Pass through channel
-    noisyData = awgn(filteredTXDataDelayed,snr,'measured')
+    noisyData = awgn(filteredTXDataDelayed,snr,'measured');
     % Filter signal
     filteredData = RxFlt(noisyData);
     % Visualize Correlation

@@ -16,9 +16,9 @@ mult = 10;
 Fs1 = 10*2*pi;
 % Create data streams
 tanalog = 0:1/(Fs1*mult):100-(1/(Fs1*mult));   % Time index vector
-tdigital = 0:1/(Fs1):100-(1/Fs1); 
+tdigital = 0:1/(Fs1):100-(1/Fs1);
 sin_analog = sin(5*tanalog*2*pi);         % Generation of sinusoidal signal
-sin_digital = sin(5*tdigital*2*pi);  
+sin_digital = sin(5*tdigital*2*pi);
 sin_quantized = (floor(sin_analog*(2^bits)))/(2^bits);
 sin_sample = downsample(sin_quantized, mult);
 sin_time_sample = zeros(1,length(tdigital));
@@ -63,22 +63,10 @@ function out = do_fs(in)
 end
 function time_plot(x1, x2, txtsize, ltxtsize, pwidth, pheight, pxoffset, ...
     pyoffset, markersize, titlestr)
-    persistent file;    
+    persistent file;
     xlabel('Discrete Time (n)');ylabel('Signal Amplitude');
     ylim([-1.5 1.5]);
     xlim([x1 x2]);
-    save=1;
-    if save
-        if isempty(file)  || (file >= 5)
-            file = 1;
-        else
-            file = file + 1;
-        end
-        SetPlotSize ([pxoffset pyoffset pwidth pheight],'inches','white');
-        SetPlotFont ('Times', txtsize);
-        set(gcf,'PaperPositionMode','auto');
-        print(sprintf('ch2_dac_overview_time_%d', file),'-depsc');
-    end
     title(titlestr);
 end
 function fft_plot(data, points, oversample, txtsize, ltxtsize, pwidth, pheight, pxoffset, ...
@@ -106,17 +94,5 @@ function fft_plot(data, points, oversample, txtsize, ltxtsize, pwidth, pheight, 
     xlim([-0.5*oversample 0.5*oversample]);
     xticks(-oversample/2:.5:oversample/2);
     grid on;
-    save=1;
-    if save
-        if isempty(file) ||  (file >= 5)
-            file = 1;
-        else
-            file = file + 1;
-        end
-        SetPlotSize ([pxoffset pyoffset pwidth pheight],'inches','white');
-        SetPlotFont ('Times', txtsize);
-        set(gcf,'PaperPositionMode','auto');
-        print(sprintf('ch2_dac_overview_fft_%d', file),'-depsc');
-    end
     title(titlestr);
 end

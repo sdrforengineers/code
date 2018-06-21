@@ -1,83 +1,49 @@
 %----------------------------------------------------------------------
-% Chapter 3 
+% Chapter 3
 % "Digital Communication Systems Engineering Using Software Defined Radio
 % MATLAB Scripts
 %----------------------------------------------------------------------
 
 % Clear workspace
 clear all;
-
-
-% Specify plot parameters
-txtsize=10;
-ltxtsize=9;
-pwidth=4;
-pheight=4;
-pxoffset=0.65;
-pyoffset=0.5;
-markersize=5;
-
+figNum = 1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generating a binary data source
 
 % Create three binary data streams of length L, each with a different percentage of 1
 % and 0 values
-L = 100; 
+L = 100;
 prob1 = 0.5; prob2 = 0.6; prob3 = 0.2; % Probability values for 1 outputs
 b1 = round(0.5*rand(1,L)+0.5*prob1); % Even split between 1 and 0 values
 b2 = round(0.5*rand(1,L)+0.5*prob2); % Have 60% 1 values and 40% 0 values
 b3 = round(0.5*rand(1,L)+0.5*prob3); % Have 20% 1 values and 80% 0 values
 
 % Display data stream and associated histogram
-figure(1);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+figure(figNum); figNum = figNum+1;
 stem((0:1:L-1),b1);xlabel('Discrete Time (n)');ylabel('Digital Value');
 %title(sprintf('Binary Data Stream\n (%d%% ones, %d%% zeros)',100*(prob1),100*(1-prob1)));
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_binprob_s1','-depsc');
-close;
-figure(1);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 histogram(b1,2);xlabel('Digital Value');ylabel({'Occurance';'Probability (%)'});
 %title(sprintf('Histogram of Binary Stream\n (%d%% ones, %d%% zeros)',100*(prob1),100*(1-prob1)));
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_binprob_h1','-depsc');
-close;
-figure(1);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 stem((0:1:L-1),b2);xlabel('Discrete Time (n)');ylabel('Digital Value');
 %title(sprintf('Binary Data Stream\n (%d%% ones, %d%% zeros)',100*(prob2),100*(1-prob2)));
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_binprob_s2','-depsc');
-close;
-figure(1);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 histogram(b2,2);xlabel('Digital Value');ylabel({'Occurance';'Probability (%)'});
 %title(sprintf('Histogram of Binary Stream\n (%d%% ones, %d%% zeros)',100*(prob2),100*(1-prob2)));
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_binprob_h2','-depsc');
-close;
-figure(1);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 stem((0:1:L-1),b3);xlabel('Discrete Time (n)');ylabel('Digital Value');
 %title(sprintf('Binary Data Stream\n (%d%% ones, %d%% zeros)',100*(prob3),100*(1-prob3)));
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_binprob_s3','-depsc');
-close;
-figure(1);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 histogram(b3,2);xlabel('Digital Value');ylabel({'Occurance';'Probability (%)'});
 %title(sprintf('Histogram of Binary Stream\n (%d%% ones, %d%% zeros)',100*(prob3),100*(1-prob3)));
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_binprob_h3','-depsc');
-close;
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Binary channel example
@@ -108,14 +74,10 @@ b4error_1 = sum(abs(b4(ind_one) - b4hat(ind_one)))/length(ind_one);
 b4error_0 = sum(abs(b4(ind_zero) - b4hat(ind_zero)))/length(ind_zero);
 
 % Plot histogram of bit errors
-figure(2);
-SetPlotSize ([pxoffset pyoffset pwidth pheight-2.5],'inches','white');
-SetPlotFont ('Times', txtsize);
+figure(figNum); figNum = figNum+1;
 bar([1 2 3],[b4error_total b4error_1 b4error_0]);xlabel('Bit Error Rates: (1) Total, (2) One Transmitted, (3) Zero Transmitted');ylabel('Probability');
 %title('Binary Channel Error Probabilities');
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_binchannelerr','-depsc');
-close;
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Random Variable PDFs and CDFs
@@ -149,57 +111,32 @@ prob_normal = sum(N_normal(normal_ind_range))./L;
 prob_rayl = sum(N_rayl(rayl_ind_range))./L;
 
 % Plot the PDF and CDF of these random values
-figure(3);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+figure(figNum); figNum = figNum+1;
 histogram(b_unif,res_hist,'Normalization','probability');xlabel('Output Values of Random Variable');ylabel('Probability');
 %title({'Uniform Probability';'Density Function'});
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_pdfs_cdfs_h1','-depsc');
-close;
-figure(3);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 bar((edges_unif(1:1:(length(edges_unif)-1))+edges_unif(2:1:(length(edges_unif))))./2,N_unif_cum,(edges_unif(2)-edges_unif(1)));xlabel('Output Values of Random Variable');ylabel({'Cumulative';'Probability'});hold on;line([x_lower x_lower],[0 1]);line([x_upper x_upper],[0 1]);text(0.4,0.9,sprintf('P(%0.5g<X<%0.5g)=%0.5g',x_lower,x_upper,prob_unif));hold off;
 %title({'Uniform Cumulative';'Distribution Function'});
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_pdfs_cdfs_b1','-depsc');
-close;
-figure(3);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 histogram(b_normal,res_hist,'Normalization','probability');xlabel('Output Values of Random Variable');ylabel('Probability');
 %title({'Gaussian Probability';'Density Function'});
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_pdfs_cdfs_h2','-depsc');
-close;
-figure(3);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 bar((edges_normal(1:1:(length(edges_normal)-1))+edges_normal(2:1:(length(edges_normal))))./2,N_normal_cum,(edges_normal(2)-edges_normal(1)));xlabel('Output Values of Random Variable');ylabel({'Cumulative';'Probability'});hold on;line([x_lower x_lower],[0 1]);line([x_upper x_upper],[0 1]);text(-5,0.9,sprintf('P(%0.5g<X<%0.5g)=%0.5g',x_lower,x_upper,prob_normal));hold off;
 %title({'Gaussian Cumulative';'Distribution Function'});
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_pdfs_cdfs_b2','-depsc');
-close;
-figure(3);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 histogram(b_rayleigh,res_hist,'Normalization','probability');xlabel('Output Values of Random Variable');ylabel('Probability');
 %title({'Rayleigh Probability';'Density Function'});
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_pdfs_cdfs_h3','-depsc');
-close;
-figure(3);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 bar((edges_rayl(1:1:(length(edges_rayl)-1))+edges_rayl(2:1:(length(edges_rayl))))./2,N_rayl_cum,(edges_rayl(2)-edges_rayl(1)));xlabel('Output Values of Random Variable');ylabel({'Cumulative';'Probability'});hold on;line([x_lower x_lower],[0 1]);line([x_upper x_upper],[0 1]);text(0.1,0.9,sprintf('P(%0.5g<X<%0.5g)=%0.5g',x_lower,x_upper,prob_rayl));hold off;
 %title({'Rayleigh Cumulative';'Distribution Function'});
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_pdfs_cdfs_b3','-depsc');
-close;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Generate bivariate random variables 
+% Generate bivariate random variables
 
 % Define simulation parameters
 L = 1000000; % Length of data streams
@@ -215,41 +152,24 @@ x_normal_2 = x_normal_1+0.1*y_normal_1;
 y_normal_2 = y_normal_1+0.9*x_normal_1;
 
 % Plot 2D histograms of uncorrelated and correlated 2D Gaussian random data stream
-figure(4);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+figure(figNum); figNum = figNum+1;
 histogram2(x_normal_1,y_normal_1,res_hist,'Normalization','pdf','DisplayStyle','bar3');xlabel('X');ylabel('Y');
 %title('Uncorrelated Gauassian');
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_bivargauss_uncorrb','-depsc');
-close;
-figure(4);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 histogram2(x_normal_1,y_normal_1,res_hist,'Normalization','pdf','DisplayStyle','tile');xlabel('X');ylabel('Y');
 %title('Uncorrelated Gauassian');
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_bivargauss_uncorrt','-depsc');
-close;
-figure(4);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 histogram2(x_normal_2,y_normal_2,res_hist,'Normalization','pdf','DisplayStyle','bar3');xlabel('X');ylabel('Y');
 %title('Correlated Gaussian');
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_bivargauss_corrb','-depsc');
-close;
-figure(4);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-2],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 histogram2(x_normal_2,y_normal_2,res_hist,'Normalization','pdf','DisplayStyle','tile');xlabel('X');ylabel('Y');
 %title('Correlated Gaussian');
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_bivargauss_corrt','-depsc');
-close;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Observe impact of filtering random processes 
+% Observe impact of filtering random processes
 
 % Define simulation parameters
 L = 1000000; % Length of data streams
@@ -272,54 +192,30 @@ x_out2 = real(filt_output2);
 y_out2 = imag(filt_output2);
 
 % Plot 2D histogram of input and output random data stream
-figure(5);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+figure(figNum); figNum = figNum+1;
 histogram2(x_in,y_in,res_hist,'Normalization','pdf','DisplayStyle','bar3');xlabel('X');ylabel('Y');
 %title({'Probability';'Input Random Process'});
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_psdfilt_inb','-depsc');
-close;
-figure(5);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 histogram2(x_in,y_in,res_hist,'Normalization','pdf','DisplayStyle','tile');xlabel('X');ylabel('Y');
 %title({'Probability';'Input Random Process'});
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_psdfilt_int','-depsc');
-close;
-figure(5);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 histogram2(x_out1,y_out1,res_hist,'Normalization','pdf','DisplayStyle','bar3');xlabel('X');ylabel('Y');
 %title({'Probability';'Output Random Process 1'});
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_psdfilt_out1b','-depsc');
-close;
-figure(5);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 histogram2(x_out1,y_out1,res_hist,'Normalization','pdf','DisplayStyle','tile');xlabel('X');ylabel('Y');
 %title({'Probability';'Output Random Process 1'});
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_psdfilt_out1t','-depsc');
-close;
-figure(5);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 histogram2(x_out2,y_out2,res_hist,'Normalization','pdf','DisplayStyle','bar3');xlabel('X');ylabel('Y');
 %title({'Probability';'Output Random Process 2'});
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_psdfilt_out2b','-depsc');
-close;
-figure(5);
-SetPlotSize ([pxoffset pyoffset pwidth-2 pheight-3],'inches','white');
-SetPlotFont ('Times', txtsize);
+
+figure(figNum); figNum = figNum+1;
 histogram2(x_out2,y_out2,res_hist,'Normalization','pdf','DisplayStyle','tile');xlabel('X');ylabel('Y');
 %title({'Probability';'Output Random Process 2'});
-set(gcf,'PaperPositionMode','auto');
-print('../ch3_psdfilt_out2t','-depsc');
-close;
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% END OF CHAPTER 3 EXAMPLES %%%%%%%%%%%%%%%%%%%%
