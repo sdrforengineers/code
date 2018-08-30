@@ -37,16 +37,4 @@ for index = 0:300
     cd(o);
     pause(0.1);
 end
-%% Stills
 
-tau_hats = [0.1, 0.5, 1, 1.5];
-for tau_hat = tau_hats
-delayedsig = VFD(data, tau_hat);
-% Linear interpolation
-o = sum(reshape(delayedsig,remainingSPS,...
-      length(delayedsig)/remainingSPS).',2)./remainingSPS;
- % figure(1);
-scatterplot(o);
-config = {'fontsize',16,'fontname','Times'};
-MakeFigureLatexReady(gcf,config{:},'filename',['constellation_tau_',num2str(tau_hat)]);
-end
